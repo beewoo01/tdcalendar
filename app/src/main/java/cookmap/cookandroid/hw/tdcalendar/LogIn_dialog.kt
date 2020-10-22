@@ -85,17 +85,10 @@ class LogIn_dialog : DialogFragment() {
 
     private fun onLoginResponse(data: JSONObject) {
         Log.d("Main_onLoginResponse", "여기옴")
-        val numUsers: Int
-        numUsers = try {
-            data.getInt("numUsers")
-        } catch (e: JSONException) {
-            return
-        }
-        //val intent = Intent()
-        Log.d("numUsers", numUsers.toString())
-        //intent.putExtra("numUsers", numUsers)
-        //setResult(RESULT_OK, intent)
-        //finish()
+        Log.d("Main_onLoginResponse", data.getString("msg"))
+        Log.d("Main_onLoginResponse", data.getString("data"))
+        this.dismiss()
+
     }
 
 }
