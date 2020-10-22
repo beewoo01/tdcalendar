@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f17726</color>
+    <color name="colorPrimaryDark">#f17726</color>
+    <color name="colorAccent">#03DAC5</color>
+
+
+    <color name="colorYellow">#FFEB3B</color>
+
+    <color name="selectedDay">#e1e1e1</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="today">@color/black</color>
+
+    <color name="joohang">#f17726</color>
+    <color name="navy">#4a439d</color>
+    <color name="gray">#d7d4fb</color>
+    <color name="gray2">#d6d3fb</color>
+    <color name="green">#56724a</color>
+    <color name="red_another">#a45858</color>
+
+    <color name="button_pressed">#F88940</color>
+
+</resources>

@@ -1,0 +1,34 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cookmap.cookandroid.hw.tdcalendar.MainActivity">
+    <item
+        android:id="@+id/action_main"
+        android:orderInCategory="100"
+        android:title="@string/action_main"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_group"
+        android:orderInCategory="100"
+        android:title="@string/action_group"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_scadule"
+        android:orderInCategory="100"
+        android:title="@string/action_schedul"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_make_room"
+        android:orderInCategory="100"
+        android:title="@string/action_make"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+</menu>
