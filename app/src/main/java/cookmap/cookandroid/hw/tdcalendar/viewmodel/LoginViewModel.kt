@@ -36,7 +36,7 @@ class LoginViewModel : ViewModel() {
         var jsonObject = JSONObject()
         jsonObject.put("email", user.Email)
         jsonObject.put("pwd", user.Password)
-        jsonObject.put("name", user.Name)
+        //jsonObject.put("name", user.Name)
         mSocket.emit(action, jsonObject)
     }
 
@@ -53,8 +53,8 @@ class LoginViewModel : ViewModel() {
     private var onLogin : Emitter.Listener = Emitter.Listener { args ->
         Log.d("onLogin", "Model Onlogin 에 옴")
         val receivedDate = args[0] as JSONObject
-        Log.d("onLoginFunction", receivedDate.getString("msg"))
         Log.d("onLoginFunction", receivedDate.getString("data"))
+        //Log.d("onLoginFunction", receivedDate.getString("sendresult"))
         onLoginResponse.postValue(args[0] as JSONObject)
 
     }

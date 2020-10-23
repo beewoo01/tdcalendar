@@ -59,13 +59,12 @@ class LogIn_dialog : DialogFragment() {
     fun setLogin(){
         var editEmail = binding.userEmailEdit.text.toString()
         var editPwd = binding.userPwdEdit.text.toString()
-        var editName = binding.userNameEdit.text.toString()
-        if (TextUtils.isEmpty(editEmail) || TextUtils.isEmpty(editPwd) || TextUtils.isEmpty(editName)){
+        if (TextUtils.isEmpty(editEmail) || TextUtils.isEmpty(editPwd)){
             Toast.makeText(activity, "빈 칸 없이 작성 해주세요", Toast.LENGTH_SHORT).show()
         }else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(editEmail).matches()){
             Toast.makeText(activity, "이메일 형식에 어긋납니다.", Toast.LENGTH_SHORT).show()
         }else{
-            val user = User(editEmail, editPwd, editName)
+            val user = User(editEmail, editPwd)
             observeViewmodel(user)
         }
     }
@@ -84,9 +83,13 @@ class LogIn_dialog : DialogFragment() {
     }
 
     private fun onLoginResponse(data: JSONObject) {
+        //TODO json 파싱 후 UI 업데이트
+        if (data.getInt("data") == 1){
+            
+        }
         Log.d("Main_onLoginResponse", "여기옴")
-        Log.d("Main_onLoginResponse", data.getString("msg"))
-        Log.d("Main_onLoginResponse", data.getString("data"))
+        Log.d("Main_onLoginResponse", "data " + data.getString("data"))
+        Log.d("Main_onLoginResponse", "sendresult "+ data.getString("sendresult"))
         this.dismiss()
 
     }
