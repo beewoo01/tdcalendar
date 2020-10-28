@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="item"
-            type="cookmap.cookandroid.hw.tdcalendar.MainActivity" />
+            name="user"
+            type="cookmap.cookandroid.hw.tdcalendar.model.User" />
+        <variable
+            name="viewmodel"
+            type="cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel" />
     </data>
 
     <LinearLayout
@@ -28,7 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="@string/action_schedul"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="@{viewmodel.user.name}"
             />
     </LinearLayout>
 </layout>

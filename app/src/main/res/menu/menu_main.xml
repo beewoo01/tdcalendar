@@ -6,6 +6,7 @@
         android:id="@+id/action_main"
         android:orderInCategory="100"
         android:title="@string/action_main"
+        android:titleCondensed=""
         app:showAsAction="never" />
 
     <item

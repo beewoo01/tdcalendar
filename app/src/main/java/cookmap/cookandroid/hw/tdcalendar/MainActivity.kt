@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -33,7 +34,8 @@ class MainActivity : AppCompatActivity() {
     var TAG = "MainActivity"
     private lateinit var binding : ActivityMainBinding
     private lateinit var viewModel: Date_ViewModel
-    private lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel: LoginViewModel by viewModels()
+    private lateinit var headerbind : NaviHeaderBinding
     lateinit var mSocket : Socket
     var users : Array<String> = arrayOf()
 
@@ -41,15 +43,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProvider(this).get(Date_ViewModel::class.java)
-        var headerbind : NaviHeaderBinding = DataBindingUtil.inflate(
-            layoutInflater,
-            R.layout.navi_header, binding.designNavigationView, false
-        )
+        val headerView : View = binding.designNavigationView.getHeaderView(0)
+        headerbind = NaviHeaderBinding.bind(headerView)
         binding.activity = this@MainActivity
-
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-
-        //observeViewmodel()
+        headerbind.viewmodel = loginViewModel
+        headerbind.setLifecycleOwner(this)
+        headerbind.nickName.setText("닉네임")
+        //loginViewModel.onLoginResponse.observe(this, this::observeViewmodel)
 
 
         initView()
@@ -60,6 +60,12 @@ class MainActivity : AppCompatActivity() {
 
         //binding.drawerLayout.closeDrawers()
 
+    }
+    fun observeViewmodel(data : JSONObject){
+        Log.d("observeViewmodel", data.getString("data"))
+        //Log.d("observeVie user.email", loginViewModel.user.Email)
+
+        //headerbind.nickName.setText(loginViewModel.user.name)
     }
 
     fun initView(){

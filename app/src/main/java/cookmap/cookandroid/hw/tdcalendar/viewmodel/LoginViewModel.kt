@@ -10,12 +10,11 @@ import io.socket.emitter.Emitter
 import org.json.JSONObject
 
 class LoginViewModel : ViewModel() {
-    val onLoginResponse = MutableLiveData<JSONObject>()
     val mSocketHelper : SocketHelper = SocketHelper()
     val Tag = "LoginViewmodel"
     lateinit var mSocket: Socket
-    lateinit var user : User
-
+    val user = MutableLiveData<User>()
+    //lateinit var user : User
     fun start(){
         Log.d("viewmodel", "start에옴")
         mSocket = mSocketHelper.getSocket()!!
@@ -55,7 +54,21 @@ class LoginViewModel : ViewModel() {
         val receivedDate = args[0] as JSONObject
         Log.d("onLoginFunction", receivedDate.getString("data"))
         //Log.d("onLoginFunction", receivedDate.getString("sendresult"))
-        onLoginResponse.postValue(args[0] as JSONObject)
+        if (receivedDate.getInt("data") == 1){
+            this.user.postValue(User(name = "Login"))
+        }else{
+            val jsonArray = receivedDate.getJSONArray("sendresult")
+            for (i in 0.. jsonArray.length() -1){
+                val iObject = jsonArray.getJSONObject(i)
+                val id = iObject.getInt("userUid")
+                val email = iObject.getString("userEmail")
+                val pwd = iObject.getString("userPwd")
+                val name = iObject.getString("userName")
+                val profile = iObject.getString("userProfile")
+                val invitation = iObject.getString("invitation")
+                this.user.postValue(User(email, pwd, name, id, profile, invitation))
+            }
+        }
 
     }
     fun connect(){
