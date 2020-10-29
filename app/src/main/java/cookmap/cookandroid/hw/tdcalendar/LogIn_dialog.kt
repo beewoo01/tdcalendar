@@ -12,14 +12,9 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
 import cookmap.cookandroid.hw.tdcalendar.databinding.LoginDialogBinding
 import cookmap.cookandroid.hw.tdcalendar.model.User
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
-import kotlinx.android.synthetic.main.login_dialog.view.*
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 
 class LogIn_dialog : DialogFragment() {
 
@@ -64,17 +59,19 @@ class LogIn_dialog : DialogFragment() {
         }else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(editEmail).matches()){
             Toast.makeText(activity, "이메일 형식에 어긋납니다.", Toast.LENGTH_SHORT).show()
         }else{
+
             val user = User(Email = editEmail, Password =  editPwd)
-            observeViewmodel(user)
+            setViewmodel(user)
         }
     }
 
-    fun observeViewmodel(user : User){
+    fun setViewmodel(user : User){
         //loginViewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
         //loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         loginViewModel.start()
         loginViewModel.connect()
+        loginViewModel.isRememvered = false
         loginViewModel.socketEmit("login", user)
         loginViewModel.socketOn("serverMessage")
         dismiss()

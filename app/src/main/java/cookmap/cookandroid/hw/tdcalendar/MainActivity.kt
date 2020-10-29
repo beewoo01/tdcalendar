@@ -1,42 +1,38 @@
 package cookmap.cookandroid.hw.tdcalendar
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
+import com.google.android.material.navigation.NavigationView
 import cookmap.cookandroid.hw.tdcalendar.databinding.ActivityMainBinding
 import cookmap.cookandroid.hw.tdcalendar.databinding.NaviHeaderBinding
+import cookmap.cookandroid.hw.tdcalendar.model.User
+import cookmap.cookandroid.hw.tdcalendar.session.session
 import cookmap.cookandroid.hw.tdcalendar.view.Main_Fragment
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Date_ViewModel
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
-import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import org.json.JSONException
 import org.json.JSONObject
-import java.net.URISyntaxException
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var TAG = "MainActivity"
     private lateinit var binding : ActivityMainBinding
     private lateinit var viewModel: Date_ViewModel
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var headerbind : NaviHeaderBinding
-    lateinit var mSocket : Socket
+    private lateinit var mSocket : Socket
     var users : Array<String> = arrayOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,24 +44,10 @@ class MainActivity : AppCompatActivity() {
         binding.activity = this@MainActivity
         headerbind.viewmodel = loginViewModel
         headerbind.setLifecycleOwner(this)
-        headerbind.nickName.setText("닉네임")
-        //loginViewModel.onLoginResponse.observe(this, this::observeViewmodel)
-
-
+        headerbind.activity = this@MainActivity
         initView()
         viewModel.date = Calendar.getInstance().timeInMillis
-        Log.d("date?", viewModel.date.toString())
-        Log.d("timeInMillis?", Calendar.getInstance().timeInMillis.toString())
-        //observeViewmodel()
 
-        //binding.drawerLayout.closeDrawers()
-
-    }
-    fun observeViewmodel(data : JSONObject){
-        Log.d("observeViewmodel", data.getString("data"))
-        //Log.d("observeVie user.email", loginViewModel.user.Email)
-
-        //headerbind.nickName.setText(loginViewModel.user.name)
     }
 
     fun initView(){
@@ -73,18 +55,44 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_menu_24)
+        //main fragment 로 연결
+        supportFragmentManager.beginTransaction().replace(R.id.nav_fragment, Main_Fragment()).commit()
+        binding.designNavigationView.setNavigationItemSelectedListener(this)
 
-        binding.designNavigationView.setNavigationItemSelectedListener { item: MenuItem ->
-            item.setCheckable(true)
-            binding.drawerLayout.closeDrawers()
-            onChangeFragment(item)
-            true
+        if (!session.prefs.getString().first.equals("") ||
+            !session.prefs.getString().second.equals("")){
+            onLogin(User(session.prefs.getString().first , session.prefs.getString().second))
         }
     }
 
-    fun userInfoClick(view: View){
-        var loginDialog = LogIn_dialog()
-        loginDialog.show(supportFragmentManager, "dialog")
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        var ft = supportFragmentManager.beginTransaction()
+        when(item.itemId){
+            R.id.action_main -> ft.replace(R.id.nav_fragment, Main_Fragment()).commit()
+            R.id.action_group -> Log.d("click", "group")
+            R.id.action_scadule -> true
+            R.id.action_make_room -> true
+            R.id.action_settings -> true
+
+        }
+        binding.drawerLayout.closeDrawers()
+        return true
+    }
+
+    fun onLogin(user: User) {
+        loginViewModel.start()
+        loginViewModel.connect()
+        loginViewModel.isRememvered = true
+        loginViewModel.socketEmit("login", user)
+        loginViewModel.socketOn("serverMessage")
+    }
+
+    fun userInfoClick(){
+        if (loginViewModel.user.value?.Email == null){
+            var loginDialog = LogIn_dialog()
+            loginDialog.show(supportFragmentManager, "dialog")
+        }
+
     }
 
 
@@ -156,20 +164,8 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onSupportNavigateUp(): Boolean {
-        Log.d("click", "됨")
         binding.drawerLayout.open()
         return super.onSupportNavigateUp()
-    }
-
-    fun onChangeFragment(item: MenuItem){
-        val ft = supportFragmentManager.beginTransaction()
-        when(item.itemId){
-            R.id.action_main -> ft.replace(R.id.nav_fragment, Main_Fragment()).commit()
-            R.id.action_group -> Log.d("click", "group")
-            R.id.action_scadule -> true
-            R.id.action_make_room -> true
-            R.id.action_settings -> true
-        }
     }
 
     override fun onBackPressed() {

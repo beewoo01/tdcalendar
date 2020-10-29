@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="user"
-            type="cookmap.cookandroid.hw.tdcalendar.model.User" />
+            name="activity"
+            type="cookmap.cookandroid.hw.tdcalendar.MainActivity" />
         <variable
             name="viewmodel"
             type="cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel" />
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:gravity="start|center"
         android:orientation="horizontal"
-        android:onClick="userInfoClick"
+        android:onClick="@{() -> activity.userInfoClick()}"
         >
         <ImageView
             android:id="@+id/profile_img"

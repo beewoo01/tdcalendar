@@ -5,11 +5,19 @@ import android.content.SharedPreferences
 
 class PreferenceUtil(context: Context) {
     private val prefs: SharedPreferences =
-        context.getSharedPreferences("prefs_name", Context.MODE_PRIVATE)
-    fun getString(key: String, defValue: String): String {
-        return prefs.getString(key, defValue).toString()
+        context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+    private val editor : SharedPreferences.Editor = prefs.edit()
+
+    fun getString(): Pair<String, String> {
+        var pEmail = prefs.getString("email", "")
+        var pPwd = prefs.getString("pwd", "")
+        var pair = Pair(pEmail, pPwd)
+        return pair
     }
 
-    fun setString(key: String, str: String) { prefs.edit().putString(key, str).apply() }
+    fun setString(email: String, pwd: String) {
+        prefs.edit().putString("email", email).apply()
+        prefs.edit().putString("pwd", pwd).apply()
+    }
 
 }

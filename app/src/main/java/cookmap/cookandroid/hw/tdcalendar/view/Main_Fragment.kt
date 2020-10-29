@@ -38,11 +38,11 @@ class Main_Fragment : Fragment() , FrgCalendar.OnFragmentListener{
         bind.pager.setCurrentItem(COUNT_PAGE)
         var title : String = adapter.getMonthDisplayed(COUNT_PAGE)
         Log.d("title?", title)
-        (activity as MainActivity?)?.getSupportActionBar()?.setTitle(Html.fromHtml("<font color=\"#ffffff\">$title</font>"))
+        (activity as MainActivity?)?.getSupportActionBar()?.setTitle(title)
         bind.pager.registerOnPageChangeCallback(object : OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 var title : String = adapter.getMonthDisplayed(position)
-                (activity as MainActivity?)?.getSupportActionBar()?.setTitle(Html.fromHtml("<font color=\"#ffffff\">$title</font>"))
+                (activity as MainActivity?)?.getSupportActionBar()?.setTitle(title)
                 Log.d("inFunction ", title)
                 if (position == 0){
                     adapter.addPrev()

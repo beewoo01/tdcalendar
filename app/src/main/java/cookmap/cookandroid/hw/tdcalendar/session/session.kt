@@ -2,7 +2,7 @@ package cookmap.cookandroid.hw.tdcalendar.session
 
 import android.app.Application
 
-class Session : Application() {
+class session : Application() {
     companion object{
         lateinit var prefs : PreferenceUtil
     }
