@@ -1,52 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="cookmap.cookandroid.hw.tdcalendar.viewmodel.Contents_ViewModel" />
+        <variable
+            name="item"
+            type="cookmap.cookandroid.hw.tdcalendar.model.Contents" />
+    </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/date_schdule"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="12 Apr"
-                android:textColor="@color/navy"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text=" ㅡ"
-                android:textColor="@color/navy"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview_schdule"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorYellow"
+            android:layout_height="match_parent"
             android:backgroundTint="@color/colorPrimary"
             app:cardCornerRadius="20dp">
 
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                >
+                android:padding="5dp">
 
 
                 <LinearLayout
@@ -54,93 +39,116 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:orientation="vertical"
-                    android:padding="15dp">
+                    android:padding="20dp">
 
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_event_note_24"
+                        />
+
+                    <TextView
+                        android:id="@+id/schdual_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        tools:text="title_text"
+                        android:text="@{item.title}"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/schdual_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="20dp"
+                        tools:text="15:30"
+                        android:text="@{item.time}"
+                        android:textColor="@color/white"
+                        android:textSize="40sp" />
+
+                    <TextView
+                        android:id="@+id/schdual_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="10dp"
+                        tools:text="11월 10일"
+                        android:text="@{item.date}"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/schdual_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        tools:text="location"
+                        android:text="@{item.explan}"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/white"
+                        />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/partner_one_icon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/ic_launcher_foreground" />
+
+                        <ImageView
+                            android:id="@+id/partner_two_icon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/ic_launcher_foreground" />
+
+                        <ImageView
+                            android:id="@+id/partner_three_icon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/ic_launcher_foreground" />
 
                         <TextView
-                            android:id="@+id/title_schdule"
+                            android:id="@+id/etc_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Card Rent App"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:id="@+id/detail_schdule"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Android Version"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <TextView
-                            android:id="@+id/location_schdule"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Android Version"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_marginRight="5dp"
-                                android:src="@color/colorYellow" />
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_marginRight="5dp"
-                                android:src="@color/navy" />
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_marginRight="5dp"
-                                android:src="@color/red" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="6.."
-                                android:textSize="20sp" />
-                        </LinearLayout>
-
+                            android:layout_gravity="center"
+                            android:text="6.."
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            />
 
                     </LinearLayout>
-
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    >
+                    android:layout_gravity="end">
 
                     <ImageView
-                        android:id="@+id/more_schdule"
+                        android:id="@+id/more_btn_schdual"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_margin="5dp"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/ic_more_horiz_24"
-                        />
-
-
-                </RelativeLayout>
-
-
+                        android:src="@drawable/ic_more_horiz_24" />
+                </LinearLayout>
             </LinearLayout>
+
+
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

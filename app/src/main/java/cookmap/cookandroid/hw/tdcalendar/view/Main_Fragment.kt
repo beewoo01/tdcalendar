@@ -2,20 +2,24 @@ package cookmap.cookandroid.hw.tdcalendar.view
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import cookmap.cookandroid.hw.tdcalendar.MainActivity
 import cookmap.cookandroid.hw.tdcalendar.R
+import cookmap.cookandroid.hw.tdcalendar.adapter.main_frag_adapter
 import cookmap.cookandroid.hw.tdcalendar.databinding.MainFragmentBinding
+import cookmap.cookandroid.hw.tdcalendar.model.Contents
+import cookmap.cookandroid.hw.tdcalendar.viewmodel.Contents_ViewModel
 import cookmap.cookandroid.hw.tdcalendar.widget.AdapterFrgCalendar
 import cookmap.cookandroid.hw.tdcalendar.widget.FrgCalendar
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Main_Fragment : Fragment() , FrgCalendar.OnFragmentListener{
 
@@ -26,7 +30,24 @@ class Main_Fragment : Fragment() , FrgCalendar.OnFragmentListener{
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         bind = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
         initView()
+        initItem()
         return bind.root
+    }
+    fun initItem(){
+        val viewmodel : Contents_ViewModel by viewModels()
+
+        val arr = 10
+        val array = ArrayList<Contents>()
+        for (i in 1..arr){
+            var contents = Contents(i.toString(), i.toString(), i.toString(), i.toString(), i.toString())
+            array.add(contents)
+        }
+        viewmodel.setContentsLive(array)
+        bind.memoRecycler.adapter = main_frag_adapter(array)
+        viewmodel.model.observe(requireActivity(), androidx.lifecycle.Observer {
+            bind.memoRecycler.adapter?.notifyDataSetChanged()
+        })
+
     }
 
     fun initView(){

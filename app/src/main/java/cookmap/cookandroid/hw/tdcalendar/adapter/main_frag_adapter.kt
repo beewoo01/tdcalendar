@@ -1,24 +1,35 @@
 package cookmap.cookandroid.hw.tdcalendar.adapter
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import cookmap.cookandroid.hw.tdcalendar.databinding.ScheduleItemBinding
+import cookmap.cookandroid.hw.tdcalendar.model.Contents
 
-class main_frag_adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class main_frag_adapter(var arraylist : ArrayList<Contents>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        TODO("Not yet implemented")
+        val binding = ScheduleItemBinding.inflate(LayoutInflater.from(parent.context)
+            , parent, false)
+        return Viewholder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        //( holder as Viewholder).binding
+        //TODO("Not yet implemented")
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return arraylist.size
     }
 
-    inner class Viewholder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
-
+    inner class Viewholder( viewBinding : ScheduleItemBinding)
+        : RecyclerView.ViewHolder(viewBinding.root){
+        val binding = viewBinding
+        fun bind(item: Contents){
+        }
     }
 }
