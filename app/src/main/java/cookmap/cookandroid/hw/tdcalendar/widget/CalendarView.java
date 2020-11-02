@@ -36,6 +36,7 @@ public class CalendarView extends ViewGroup {
     private Paint mTestPaint = makePaint(mTextColor);
 
     public CalendarItemView mCurrentSelectedView = null;
+    public CalendarItemView_Kotlin mCurrentSelectedView2 = null;
 
     public static String[] DAY_OF_WEEK = null;
 
@@ -187,7 +188,7 @@ public class CalendarView extends ViewGroup {
                 c.setTimeInMillis(time);
                 for (int i = 0; i < pager.getChildCount(); i++) {
                     for (int j = 0; j < getChildCount(); j++) {
-                        CalendarItemView child = (CalendarItemView) ((CalendarView) pager.getChildAt(i)).getChildAt(j);
+                        CalendarItemView_Kotlin child = (CalendarItemView_Kotlin) ((CalendarView) pager.getChildAt(i)).getChildAt(j);
                         if (child == null) {
                             continue;
                         }

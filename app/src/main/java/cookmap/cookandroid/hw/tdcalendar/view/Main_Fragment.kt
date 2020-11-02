@@ -36,14 +36,20 @@ class Main_Fragment : Fragment() , FrgCalendar.OnFragmentListener{
     fun initItem(){
         val viewmodel : Contents_ViewModel by viewModels()
 
-        val arr = 10
-        val array = ArrayList<Contents>()
-        for (i in 1..arr){
-            var contents = Contents(i.toString(), i.toString(), i.toString(), i.toString(), i.toString())
-            array.add(contents)
+        bind.memoRecycler.apply {
+            val arr = 10
+            val array = ArrayList<Contents>()
+            with(array){
+                for (i in 1..arr){
+                    var contents = Contents(i.toString(), i.toString(), i.toString(), i.toString(), i.toString())
+                    add(contents)
+                }
+            }
+            adapter = main_frag_adapter(array)
         }
-        viewmodel.setContentsLive(array)
-        bind.memoRecycler.adapter = main_frag_adapter(array)
+
+        //viewmodel.setContentsLive(array)
+        //bind.memoRecycler.adapter = main_frag_adapter(array)
         viewmodel.model.observe(requireActivity(), androidx.lifecycle.Observer {
             bind.memoRecycler.adapter?.notifyDataSetChanged()
         })
@@ -62,7 +68,7 @@ class Main_Fragment : Fragment() , FrgCalendar.OnFragmentListener{
         (activity as MainActivity?)?.getSupportActionBar()?.setTitle(title)
         bind.pager.registerOnPageChangeCallback(object : OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
-                var title : String = adapter.getMonthDisplayed(position)
+                title = adapter.getMonthDisplayed(position)
                 (activity as MainActivity?)?.getSupportActionBar()?.setTitle(title)
                 Log.d("inFunction ", title)
                 if (position == 0){

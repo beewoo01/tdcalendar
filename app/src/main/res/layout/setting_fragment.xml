@@ -1,6 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+        <variable
+            name="fragment"
+            type="cookmap.cookandroid.hw.tdcalendar.view.Setting_Fragment" />
+        <variable
+            name="viewmodel"
+            type="cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="2">
+
+            <ImageView
+                android:id="@+id/user_profile_setting"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:onClick="@{() -> fragment.setImage()}"
+                tools:src="@mipmap/ic_launcher"
+                />
+            <TextView
+                android:id="@+id/user_name_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:layout_marginTop="10dp"
+                android:text="@{viewmodel.user.name}"
+                tools:text="신현우"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:padding="5dp"
+            android:background="@color/black"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_setting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="3dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            />
+    </LinearLayout>
+
+</layout>

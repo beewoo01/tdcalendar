@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import cookmap.cookandroid.hw.tdcalendar.databinding.ActivityMainBinding
@@ -16,6 +17,7 @@ import cookmap.cookandroid.hw.tdcalendar.databinding.NaviHeaderBinding
 import cookmap.cookandroid.hw.tdcalendar.model.User
 import cookmap.cookandroid.hw.tdcalendar.session.session
 import cookmap.cookandroid.hw.tdcalendar.view.Main_Fragment
+import cookmap.cookandroid.hw.tdcalendar.view.Setting_profile_Fragment
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Date_ViewModel
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
 import io.socket.client.Socket
@@ -67,14 +69,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var ft = supportFragmentManager.beginTransaction()
+        lateinit var fragment : Fragment
+
         when(item.itemId){
-            R.id.action_main -> ft.replace(R.id.nav_fragment, Main_Fragment()).commit()
-            R.id.action_group -> Log.d("click", "group")
-            R.id.action_scadule -> true
-            R.id.action_make_room -> true
-            R.id.action_settings -> true
+            R.id.action_main -> fragment = Main_Fragment()
+            R.id.action_group -> fragment = Main_Fragment()
+            R.id.action_scadule -> fragment = Main_Fragment()
+            R.id.action_make_room -> fragment = Main_Fragment()
+            R.id.action_settings -> fragment = Setting_profile_Fragment()
 
         }
+        ft.apply { replace(R.id.nav_fragment, fragment) }.commit()
         binding.drawerLayout.closeDrawers()
         return true
     }

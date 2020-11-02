@@ -59,6 +59,7 @@ public class CalendarItemView extends View {
         mPaint.setColor(Color.BLACK);
         mPaint.setTextSize(dp11);
         mPaint.setTextAlign(Paint.Align.CENTER);
+
         mPaintTextWhite.setColor(Color.WHITE);
         mPaintTextWhite.setTextSize(dp11);
         mPaintTextWhite.setTextAlign(Paint.Align.CENTER);

@@ -15,8 +15,8 @@ import cookmap.cookandroid.hw.tdcalendar.R;
 public class FrgCalendar extends Fragment {
 
     private int position;
-    CalendarView calendarView;
-    CalendarItemView child;
+    CalendarView_Kotlin calendarView;
+    CalendarItemView_Kotlin child;
     private long timeByMillis;
     private OnFragmentListener onFragmentListener;
     private View mRootView;
@@ -56,7 +56,7 @@ public class FrgCalendar extends Fragment {
     }
 
     protected void initView() {
-        calendarView = (CalendarView) mRootView.findViewById(R.id.calendarview);
+        calendarView = (CalendarView_Kotlin) mRootView.findViewById(R.id.calendarview);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeByMillis);
         calendar.set(Calendar.DATE, 1);
@@ -67,7 +67,7 @@ public class FrgCalendar extends Fragment {
         calendarView.initCalendar(dayOfWeek, maxDateOfMonth);
         for (int i = 0; i < maxDateOfMonth + 7; i++) {
             //CalendarItemView child = new CalendarItemView(getActivity().getApplicationContext());
-            child = new CalendarItemView(getActivity().getApplicationContext());
+            child = new CalendarItemView_Kotlin(getActivity().getApplicationContext());
             child.setDate(calendar.getTimeInMillis());
             /*int count_memo = Database_Room.getInstance(getContext()).getDao().getMemoCount(
                     new Convert_Date().Convert_Date(calendar.getTimeInMillis()));

@@ -24,9 +24,9 @@
             android:id="@+id/memo_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/schedule_item"
+            tools:listitem="@layout/recycler_item_01"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_below="@+id/div" />
 
         <LinearLayout

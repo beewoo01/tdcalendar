@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="cookmap.cookandroid.hw.tdcalendar.viewmodel.Contents_ViewModel" />
+        <variable
+            name="item"
+            type="cookmap.cookandroid.hw.tdcalendar.model.Contents" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:outlineAmbientShadowColor="@color/black"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:background="@color/Thin_yellow"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    tools:background="@color/colorYellow">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:layout_weight="5"
+                    >
+
+                    <TextView
+                        android:id="@+id/title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        android:text="@{item.title}"
+                        tools:text="title" />
+
+                    <TextView
+                        android:id="@+id/time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        android:layout_marginTop="5dp"
+
+                        android:text="@{item.time}"
+                        tools:text="10:00 AM ~ 11:00 AM" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+
+                        >
+
+                        <ImageView
+                            android:id="@+id/partner_Image1"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="10dp"
+                            tools:src="@drawable/ic_launcher_foreground" />
+
+                        <ImageView
+                            android:id="@+id/partner_Image2"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="10dp"
+                            tools:src="@drawable/ic_launcher_foreground" />
+
+                        <ImageView
+                            android:id="@+id/partner_Image3"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            tools:src="@drawable/ic_launcher_foreground" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    >
+
+                    <ImageView
+                        android:id="@+id/more_item01"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_more_horiz_24"
+                        android:layout_centerInParent="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/location_item01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.explan}"
+                        tools:text="location"
+                        android:textSize="20sp"
+                        android:layout_below="@+id/more_item01"
+                        android:layout_centerHorizontal="true"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</layout>
