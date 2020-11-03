@@ -1,12 +1,15 @@
 package cookmap.cookandroid.hw.tdcalendar
 
+import android.Manifest
 import android.os.Bundle
+import android.provider.SyncStateContract
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -17,6 +20,7 @@ import cookmap.cookandroid.hw.tdcalendar.databinding.NaviHeaderBinding
 import cookmap.cookandroid.hw.tdcalendar.model.User
 import cookmap.cookandroid.hw.tdcalendar.session.session
 import cookmap.cookandroid.hw.tdcalendar.view.Main_Fragment
+import cookmap.cookandroid.hw.tdcalendar.view.Setting_Fragment
 import cookmap.cookandroid.hw.tdcalendar.view.Setting_profile_Fragment
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Date_ViewModel
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
@@ -76,7 +80,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.action_group -> fragment = Main_Fragment()
             R.id.action_scadule -> fragment = Main_Fragment()
             R.id.action_make_room -> fragment = Main_Fragment()
-            R.id.action_settings -> fragment = Setting_profile_Fragment()
+            R.id.action_settings -> fragment = Setting_Fragment()
 
         }
         ft.apply { replace(R.id.nav_fragment, fragment) }.commit()

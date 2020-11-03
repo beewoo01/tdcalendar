@@ -1,10 +1,13 @@
 package cookmap.cookandroid.hw.tdcalendar.view
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +15,7 @@ import cookmap.cookandroid.hw.tdcalendar.MainActivity
 import cookmap.cookandroid.hw.tdcalendar.R
 import cookmap.cookandroid.hw.tdcalendar.databinding.SettingParentBinding
 
-class Setting_profile_Fragment : Fragment() {
+class Setting_profile_Fragment : DialogFragment() {
 
     lateinit var ft : FragmentTransaction
     val mainChildTag = "settin_main"
@@ -30,6 +33,11 @@ class Setting_profile_Fragment : Fragment() {
 
 
         return bind.root
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(activity)
+        val inflater = activity?.layoutInflater
     }
 
 

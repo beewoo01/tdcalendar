@@ -30,8 +30,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
+                android:src="@color/design_default_color_primary"
                 android:onClick="@{() -> fragment.setImage()}"
-                tools:src="@mipmap/ic_launcher"
                 />
             <TextView
                 android:id="@+id/user_name_setting"
