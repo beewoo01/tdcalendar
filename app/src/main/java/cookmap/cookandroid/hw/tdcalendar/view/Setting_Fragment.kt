@@ -4,13 +4,11 @@ import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.pm.PackageManager
+import android.graphics.Point
 import android.os.Bundle
 import android.provider.SyncStateContract
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,24 +25,31 @@ import androidx.activity.result.contract.ActivityResultContracts.RequestPermissi
 class Setting_Fragment : Fragment() {
 
     private val loginViewModel: LoginViewModel by activityViewModels()
+
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            var firstBoolean = false
-            var secondBoolean = false
 
             permissions.entries.forEachIndexed { index, mutableEntry ->
                 Log.e("DEBUG", "${mutableEntry.key} = ${mutableEntry.value}")
                 Log.e("DEBUG INDEX ", "${index}")
-                if (index == 1 && mutableEntry.value) firstBoolean = true
-                else if (index == 2 && mutableEntry.value) secondBoolean = true
+                Log.d("ket.get", mutableEntry.key.get(index).toString())
+                Log.d("ket", mutableEntry.value.toString())
+                if (index == 1 && mutableEntry.value) showDialog(true, true)
             }
-            if (firstBoolean && secondBoolean){
-                // TODO: 2020-11-03 dialogFragment연결
-                Setting_profile_Fragment().show(parentFragmentManager, "setProfile")
-            }else{
-                Toast.makeText(activity, "접근하려면 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-            }
+
         }
+
+    private fun showDialog(first : Boolean, second : Boolean) {
+        if (first && second){
+            // TODO: 2020-11-03 dialogFragment연결
+            /*val display : Display? = activity?.windowManager?.defaultDisplay
+            val size = Point()
+            display?.getSize(size)*/
+            Setting_profile_Fragment().show(parentFragmentManager, "setProfile")
+        }else{
+            Toast.makeText(activity, "접근하려면 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
