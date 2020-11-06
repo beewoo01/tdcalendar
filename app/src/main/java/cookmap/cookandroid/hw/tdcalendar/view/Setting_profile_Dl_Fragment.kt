@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,62 +12,45 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import cookmap.cookandroid.hw.tdcalendar.databinding.GalleryItemImageviewBinding
 import cookmap.cookandroid.hw.tdcalendar.databinding.SettingParentBinding
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Gallery_ViewModel
-import java.util.*
-import kotlin.collections.ArrayList
+import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
 
-class Setting_profile_Fragment : DialogFragment() {
+
+class Setting_profile_Dl_Fragment : DialogFragment() {
 
     lateinit var bind: SettingParentBinding
+    val viewmodel: Gallery_ViewModel by viewModels()
     var fragmentWidth : Int = 0
+    val loginViewModel : LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        bind = SettingParentBinding.inflate(inflater, container, false)
-        val viewmodel: Gallery_ViewModel by viewModels()
-        bind.apply {
 
+        bind = SettingParentBinding.inflate(inflater, container, false)
+
+        bind.apply {
             recyclerSetProfile.adapter = Imageadater(viewmodel.getAllImg().value!!)
+            // todo
+            loginViewModel.testname.value = "DIALOG_FRAGMENT"
+
+            viewmodel.item.observe(requireActivity(), Observer {
+                dismiss()
+            })
+
+            //this.cropImageView.setImageUriAsync()
             //recyclerSetProfile.adapter = Imageadater(getImage())
         }
-        //(activity as MainActivity?)?.getSupportActionBar()?.setTitle("Setting")
-        //getImage()
-
         return bind.root
     }
-
-    /*private fun getImage() : ArrayList<String>{
-        val columns = arrayOf(
-            MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DATE_TAKEN)
-        val oderBy = "${MediaStore.Images.Media.DATE_TAKEN} DESC"
-        val cursor = requireActivity().contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, oderBy)
-        var array = ArrayList<String>()
-        cursor?.use {
-            val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-            val dateTakenColumn =
-                it.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)
-
-            while (it.moveToNext()){
-                val id = it.getLong(idColumn)
-                val dateTaken = Date(it.getLong(dateTakenColumn))
-                val contentUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
-                array.add(contentUri.toString())
-                Log.d(javaClass.simpleName, "id: $id, date_taken: " +
-                        "$dateTaken, content_uri: $contentUri")
-            }
-        }
-        cursor?.close()
-        return array
-    }*/
 
     override fun onResume() {
         super.onResume()
@@ -91,6 +73,7 @@ class Setting_profile_Fragment : DialogFragment() {
     inner class Imageadater(var uriArr: ArrayList<String>) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
             val binding = GalleryItemImageviewBinding.inflate(LayoutInflater.from(parent.context))
@@ -103,8 +86,9 @@ class Setting_profile_Fragment : DialogFragment() {
             return viewHolder(binding)
         }
 
+
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            var image = (holder as viewHolder).binding.galleryImgView
+            var image = (holder as viewHolder).bindingItem.galleryImgView
             Glide.with(requireActivity()).load(uriArr.get(position)).into(image)
         }
 
@@ -112,12 +96,14 @@ class Setting_profile_Fragment : DialogFragment() {
             return uriArr.size
         }
 
-        inner class viewHolder(bindingItem: GalleryItemImageviewBinding) :
+        inner class viewHolder(val bindingItem: GalleryItemImageviewBinding) :
             RecyclerView.ViewHolder(bindingItem.root) {
-            val binding = bindingItem
+            init {
+                bindingItem.galleryImgView.setOnClickListener {
+                    viewmodel.setItem(adapterPosition)
+                }
+            }
         }
-
-
     }
 
 }

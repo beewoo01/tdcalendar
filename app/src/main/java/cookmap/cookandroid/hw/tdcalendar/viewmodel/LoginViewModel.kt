@@ -22,6 +22,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var sharedPreferences: SharedPreferences
     var isRememvered = false
 
+    val testname = MutableLiveData<String>()
+
     fun start(){
         Log.d("viewmodel", "start에옴")
         mSocket = mSocketHelper.getSocket()!!

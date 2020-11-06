@@ -21,7 +21,6 @@ import cookmap.cookandroid.hw.tdcalendar.model.User
 import cookmap.cookandroid.hw.tdcalendar.session.session
 import cookmap.cookandroid.hw.tdcalendar.view.Main_Fragment
 import cookmap.cookandroid.hw.tdcalendar.view.Setting_Fragment
-import cookmap.cookandroid.hw.tdcalendar.view.Setting_profile_Fragment
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Date_ViewModel
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
 import io.socket.client.Socket
@@ -53,6 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         headerbind.activity = this@MainActivity
         initView()
         viewModel.date = Calendar.getInstance().timeInMillis
+        loginViewModel.testname.value = "메인엑티비티"
 
     }
 
@@ -62,7 +62,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_white_menu_24)
         //main fragment 로 연결
-        supportFragmentManager.beginTransaction().replace(R.id.nav_fragment, Main_Fragment()).commit()
+        setFragment(Main_Fragment())
+        //supportFragmentManager.beginTransaction().replace(R.id.nav_fragment, Main_Fragment()).commit()
         binding.designNavigationView.setNavigationItemSelectedListener(this)
 
         if (!session.prefs.getString().first.equals("") ||
@@ -71,8 +72,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+    fun setFragment( fragment : Fragment){
         var ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.nav_fragment, fragment).commit()
+
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        //var ft = supportFragmentManager.beginTransaction()
         lateinit var fragment : Fragment
 
         when(item.itemId){
@@ -83,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.action_settings -> fragment = Setting_Fragment()
 
         }
-        ft.apply { replace(R.id.nav_fragment, fragment) }.commit()
+        setFragment(fragment)
         binding.drawerLayout.closeDrawers()
         return true
     }

@@ -9,6 +9,7 @@ import cookmap.cookandroid.hw.tdcalendar.databinding.ScheduleItemBinding
 import cookmap.cookandroid.hw.tdcalendar.model.Contents
 
 class main_frag_adapter(var arraylist : ArrayList<Contents>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         /*val binding = ScheduleItemBinding.inflate(LayoutInflater.from(parent.context)
             , parent, false)*/
@@ -16,6 +17,7 @@ class main_frag_adapter(var arraylist : ArrayList<Contents>) : RecyclerView.Adap
         Log.d("onCreateViewHolder", "Adapter")
         return Viewholder(binding)
     }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         //( holder as Viewholder).binding

@@ -11,10 +11,15 @@ class Gallery_ViewModel(application: Application) : AndroidViewModel(application
 
     private val serchImg = SearchIMG(application).getAll()
     private val liveList =  MutableLiveData<ArrayList<String>>()
+    var item = MutableLiveData<String>()
 
     fun getAllImg() : MutableLiveData<ArrayList<String>>{
         liveList.value = serchImg
         return liveList
+    }
+
+    fun setItem(position : Int ){
+        item.value = liveList.value?.get(position)
     }
 
     
