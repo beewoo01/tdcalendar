@@ -42,17 +42,12 @@ class Profile_FragmentActivity : FragmentActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.profile_fragment_activity)
         binding.galViewModel = galleryViewmodel
         binding.setLifecycleOwner(this)
-        galleryViewmodel.testString.value = "첫번째입니다."
-        binding.nextTxtProfile.setOnClickListener( {
-            movoFragment(Setting_profile_Dl_Fragment() , count)
-        })
-
+        movoFragment(Setting_profile_Dl_Fragment() , count)
         bindViewModel()
     }
     fun movoFragment(fragment : Fragment, count : Int){
         var ft = supportFragmentManager.beginTransaction()
         if (count == 0){
-
             Log.d(javaClass.simpleName, "count 0 in here")
             ft.replace( R.id.frame_layout_profile, fragment).addToBackStack(null).commit()
             this.count = 1

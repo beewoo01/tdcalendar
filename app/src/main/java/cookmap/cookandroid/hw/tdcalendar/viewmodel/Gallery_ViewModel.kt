@@ -13,7 +13,7 @@ class Gallery_ViewModel(application: Application) : AndroidViewModel(application
 
     private val serchImg: ArrayList<Img> = SearchIMG(application).getAll()
     private val liveList =  MutableLiveData<ArrayList<Img>>()
-    var item = MutableLiveData<Pair<String?, String?>>()
+    var item = MutableLiveData<Img>()
     var testString = MutableLiveData<String>()
 
 
@@ -31,7 +31,8 @@ class Gallery_ViewModel(application: Application) : AndroidViewModel(application
     }*/
     fun onClickNavigate(uri : String, ori_name: String){
         _action.value = Action.Imgk(uri, ori_name)
-        item.value = Pair(uri, ori_name)
+        item.value = Img(uri, ori_name)
+
     }
 
     fun onClickPopup(popupId : Int){
