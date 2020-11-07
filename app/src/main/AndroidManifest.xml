@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         android:name=".session.session"
         >
-        <activity android:name=".PainttingActivity"></activity>
+        <activity android:name=".Profile_FragmentActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

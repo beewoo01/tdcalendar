@@ -10,6 +10,9 @@
         <variable
             name="viewmodel"
             type="cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel" />
+        <variable
+            name="galViewModel"
+            type="cookmap.cookandroid.hw.tdcalendar.viewmodel.Gallery_ViewModel" />
 
     </data>
 
@@ -41,6 +44,7 @@
                 android:textSize="30sp"
                 android:layout_marginTop="10dp"
                 android:text="@{viewmodel.user.name}"
+                android:onClick="@{() -> galViewModel.onClickNavigate()}"
                 tools:text="신현우"
                 />
 

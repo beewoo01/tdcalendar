@@ -2,6 +2,7 @@ package cookmap.cookandroid.hw.tdcalendar.view
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -15,12 +16,26 @@ import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import cookmap.cookandroid.hw.tdcalendar.MainActivity
+import cookmap.cookandroid.hw.tdcalendar.Profile_FragmentActivity
+import cookmap.cookandroid.hw.tdcalendar.onClickNavigator
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Gallery_ViewModel
 
-class Setting_Fragment : Fragment() {
+class Setting_Fragment : Fragment() , onClickNavigator{
 
     private val loginViewModel: LoginViewModel by activityViewModels()
     private val galleryViewmodel:Gallery_ViewModel by viewModels()
+
+    /*private fun bindViewModel(){
+        Log.d("bindViewModel", "bindViewModel")
+        galleryViewmodel.action.observe(viewLifecycleOwner, Observer {
+            when (it){
+                is Gallery_ViewModel.Action.Navigate ->{
+                    Log.d("bindViewModel.", "왓다")
+                }
+            }
+        })
+    }*/
 
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -31,7 +46,8 @@ class Setting_Fragment : Fragment() {
                 Log.d("ket.get", mutableEntry.key.get(index).toString())
                 Log.d("ket", mutableEntry.value.toString())
                 if (index == 1 && mutableEntry.value){
-                    showDialog(Setting_profile_Dl_Fragment(), "setProfile")
+                    startActivity(Intent(activity, Profile_FragmentActivity::class.java) )
+                    //showDialog(Setting_profile_Dl_Fragment(), "setProfile")
                 }
                 else if (index == 1 && !mutableEntry.value || index == 0 && !mutableEntry.value) {
                     Toast.makeText(activity, "접근하려면 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
@@ -40,13 +56,10 @@ class Setting_Fragment : Fragment() {
 
         }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("DESTROYED ", "DESTROYED ")
-    }
-
-    fun showDialog(dialogFragment: DialogFragment, tag : String) {
-        dialogFragment.show(parentFragmentManager, tag)
+    fun showDialog(dialogFragment: Fragment, tag : String) {
+        //((MainActivity)).setFragment(fragment = dialogFragment))
+        (activity as MainActivity).setFragment(dialogFragment)
+        //dialogFragment.show(parentFragmentManager, tag)
         //Setting_profile_Fragment().show(parentFragmentManager, "setProfile")
     }
 
@@ -58,7 +71,20 @@ class Setting_Fragment : Fragment() {
         Log.d("settingFragment", "왓습니다.")
         val bind = SettingFragmentBinding.inflate(inflater, container, false)
         bind.fragment = this
+        bind.galViewModel = galleryViewmodel
 
+        //galleryViewmodel.setNavigator(this)
+        /*galleryViewmodel.action.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireContext(), "일단은 옴!", Toast.LENGTH_SHORT).show()
+            Log.d("galleryViewmodel", "들어왔어요")
+            when (it) {
+                is Gallery_ViewModel.Action.Navigate -> {
+                    Toast.makeText(requireContext(), "Navigate!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })*/
+
+        //bindViewModel()
         with(bind) {
             viewmodel = loginViewModel
             lifecycleOwner = requireActivity()
@@ -68,11 +94,11 @@ class Setting_Fragment : Fragment() {
             }
         }
 
-        galleryViewmodel.item.value = "feww3"
+        /*galleryViewmodel.item.value = "feww3"
         galleryViewmodel.item.observe(viewLifecycleOwner, Observer {
             Log.d("여기옴", "setting_fragment Viewmodel")
             showDialog(Setting_ImgCrop_Dl_Fragmnet().newInstance(it), "img_Crop")
-        })
+        })*/
 
         //val view = bind.root
         return bind.root
@@ -83,6 +109,12 @@ class Setting_Fragment : Fragment() {
         requestMultiplePermissions.launch(
             arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
         )
+    }
+
+    override fun onitemClick() {
+        Log.d("SettinfFragment", "onitemClick")
+        //showDialog(Setting_ImgCrop_Dl_Fragmnet(), "")
+        TODO("Not yet implemented")
     }
 
 

@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import cookmap.cookandroid.hw.tdcalendar.model.Img
 import cookmap.cookandroid.hw.tdcalendar.model.User
 import java.lang.Exception
 import java.util.*
@@ -16,7 +17,7 @@ class SearchIMG(context: Context) {
     private var context = context
 
 
-    fun getAll(): ArrayList<String> {
+    fun getAll(): ArrayList<Img> {
         val columns = arrayOf(
             MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DATE_TAKEN
@@ -25,7 +26,7 @@ class SearchIMG(context: Context) {
         val cursor = context.contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, oderBy
         )
-        var array = ArrayList<String>()
+        var array = ArrayList<Img>()
         cursor?.use {
             val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
             val dateTakenColumn =
@@ -37,7 +38,7 @@ class SearchIMG(context: Context) {
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     id.toString()
                 )
-                array.add(contentUri.toString())
+                array.add(Img(contentUri.toString(), dateTaken.toString()))
                 Log.d(
                     javaClass.simpleName, "id: $id, date_taken: " +
                             "$dateTaken, content_uri: $contentUri"

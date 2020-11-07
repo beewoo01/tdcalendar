@@ -53,6 +53,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         initView()
         viewModel.date = Calendar.getInstance().timeInMillis
         loginViewModel.testname.value = "메인엑티비티"
+        loginViewModel.testname.observe(this,  androidx.lifecycle.Observer {
+            Log.d("로그인 바뀜", it)
+        })
 
     }
 
