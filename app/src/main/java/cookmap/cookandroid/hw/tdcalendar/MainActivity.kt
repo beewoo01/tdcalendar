@@ -1,18 +1,16 @@
 package cookmap.cookandroid.hw.tdcalendar
 
-import android.Manifest
 import android.os.Bundle
-import android.provider.SyncStateContract
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import cookmap.cookandroid.hw.tdcalendar.databinding.ActivityMainBinding
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         initView()
         viewModel.date = Calendar.getInstance().timeInMillis
         loginViewModel.testname.value = "메인엑티비티"
-        loginViewModel.testname.observe(this,  androidx.lifecycle.Observer {
+        loginViewModel.testname.observe(this,  Observer {
             Log.d("로그인 바뀜", it)
         })
 

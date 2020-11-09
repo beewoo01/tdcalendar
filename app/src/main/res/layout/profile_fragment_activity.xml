@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="galViewModel"
             type="cookmap.cookandroid.hw.tdcalendar.viewmodel.Gallery_ViewModel" />
@@ -10,15 +10,17 @@
         <variable
             name="loginViewModel"
             type="cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel" />
-    </data>
 
+        <variable
+            name="profile_Fa"
+            type="cookmap.cookandroid.hw.tdcalendar.Profile_FragmentActivity" />
+    </data>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,14 +33,16 @@
                 android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:onClick="@{() -> profile_Fa.onBackPressed()}"
                 android:src="@drawable/ic_white_back_ios_24" />
+
 
         </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/frame_layout_profile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

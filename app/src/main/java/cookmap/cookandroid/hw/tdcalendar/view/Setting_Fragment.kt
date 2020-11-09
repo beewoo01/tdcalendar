@@ -13,41 +13,24 @@ import androidx.fragment.app.activityViewModels
 import cookmap.cookandroid.hw.tdcalendar.adapter.setting_frag_adapter
 import cookmap.cookandroid.hw.tdcalendar.databinding.SettingFragmentBinding
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import cookmap.cookandroid.hw.tdcalendar.MainActivity
 import cookmap.cookandroid.hw.tdcalendar.Profile_FragmentActivity
-import cookmap.cookandroid.hw.tdcalendar.onClickNavigator
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Gallery_ViewModel
 
-class Setting_Fragment : Fragment() , onClickNavigator{
+class Setting_Fragment : Fragment() {
 
     private val loginViewModel: LoginViewModel by activityViewModels()
     private val galleryViewmodel:Gallery_ViewModel by viewModels()
 
-    /*private fun bindViewModel(){
-        Log.d("bindViewModel", "bindViewModel")
-        galleryViewmodel.action.observe(viewLifecycleOwner, Observer {
-            when (it){
-                is Gallery_ViewModel.Action.Navigate ->{
-                    Log.d("bindViewModel.", "왓다")
-                }
-            }
-        })
-    }*/
-
     private val requestMultiplePermissions =
+        // 권한 요청 및 확인
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
 
             permissions.entries.forEachIndexed { index, mutableEntry ->
-                Log.e("DEBUG", "${mutableEntry.key} = ${mutableEntry.value}")
-                Log.e("DEBUG INDEX ", "${index}")
-                Log.d("ket.get", mutableEntry.key.get(index).toString())
-                Log.d("ket", mutableEntry.value.toString())
+
                 if (index == 1 && mutableEntry.value){
                     startActivity(Intent(activity, Profile_FragmentActivity::class.java) )
-                    //showDialog(Setting_profile_Dl_Fragment(), "setProfile")
                 }
                 else if (index == 1 && !mutableEntry.value || index == 0 && !mutableEntry.value) {
                     Toast.makeText(activity, "접근하려면 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
@@ -55,13 +38,6 @@ class Setting_Fragment : Fragment() , onClickNavigator{
             }
 
         }
-
-    fun showDialog(dialogFragment: Fragment, tag : String) {
-        //((MainActivity)).setFragment(fragment = dialogFragment))
-        (activity as MainActivity).setFragment(dialogFragment)
-        //dialogFragment.show(parentFragmentManager, tag)
-        //Setting_profile_Fragment().show(parentFragmentManager, "setProfile")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,17 +49,6 @@ class Setting_Fragment : Fragment() , onClickNavigator{
         bind.fragment = this
         bind.galViewModel = galleryViewmodel
 
-        //galleryViewmodel.setNavigator(this)
-        /*galleryViewmodel.action.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(), "일단은 옴!", Toast.LENGTH_SHORT).show()
-            Log.d("galleryViewmodel", "들어왔어요")
-            when (it) {
-                is Gallery_ViewModel.Action.Navigate -> {
-                    Toast.makeText(requireContext(), "Navigate!", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })*/
-
         //bindViewModel()
         with(bind) {
             viewmodel = loginViewModel
@@ -93,14 +58,6 @@ class Setting_Fragment : Fragment() , onClickNavigator{
                 adapter = setting_frag_adapter()
             }
         }
-
-        /*galleryViewmodel.item.value = "feww3"
-        galleryViewmodel.item.observe(viewLifecycleOwner, Observer {
-            Log.d("여기옴", "setting_fragment Viewmodel")
-            showDialog(Setting_ImgCrop_Dl_Fragmnet().newInstance(it), "img_Crop")
-        })*/
-
-        //val view = bind.root
         return bind.root
     }
 
@@ -111,11 +68,7 @@ class Setting_Fragment : Fragment() , onClickNavigator{
         )
     }
 
-    override fun onitemClick() {
-        Log.d("SettinfFragment", "onitemClick")
-        //showDialog(Setting_ImgCrop_Dl_Fragmnet(), "")
-        TODO("Not yet implemented")
-    }
+
 
 
 }

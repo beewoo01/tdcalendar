@@ -26,6 +26,7 @@ class SearchIMG(context: Context) {
         val cursor = context.contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, oderBy
         )
+        //var array = ArrayList<Img>()
         var array = ArrayList<Img>()
         cursor?.use {
             val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)

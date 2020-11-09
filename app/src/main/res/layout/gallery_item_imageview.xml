@@ -9,11 +9,10 @@
             type="cookmap.cookandroid.hw.tdcalendar.viewmodel.Gallery_ViewModel" />
     </data>
 
-        <ImageView
-            android:id="@+id/gallery_ImgView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            />
+    <ImageView
+        android:id="@+id/gallery_ImgView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop" />
 
 </layout>

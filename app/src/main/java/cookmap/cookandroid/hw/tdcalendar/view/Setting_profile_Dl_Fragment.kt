@@ -1,12 +1,12 @@
 package cookmap.cookandroid.hw.tdcalendar.view
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,14 +17,17 @@ import cookmap.cookandroid.hw.tdcalendar.databinding.SettingParentBinding
 import cookmap.cookandroid.hw.tdcalendar.model.Img
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Gallery_ViewModel
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 
 class Setting_profile_Dl_Fragment : Fragment() {
 
     lateinit var bind: SettingParentBinding
     val galviewmodel: Gallery_ViewModel by activityViewModels()
-    //var fragmentWidth : Int = 0
-    val loginViewModel : LoginViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +39,11 @@ class Setting_profile_Dl_Fragment : Fragment() {
         bind.apply {
             viewmodel = galviewmodel
             setLifecycleOwner(requireActivity())
+
             recyclerSetProfile.adapter = Imageadater(galviewmodel.getAllImg().value!!)
+
+
+            //recyclerSetProfile.adapter = Imageadater(galviewmodel.getAllImg().value!!)
 
         }
         return bind.root
@@ -72,10 +79,9 @@ class Setting_profile_Dl_Fragment : Fragment() {
         inner class viewHolder(val bindingItem: GalleryItemImageviewBinding) :
             RecyclerView.ViewHolder(bindingItem.root) {
             init {
-                bindingItem.galleryImgView.setOnClickListener {
-                    val parm = uriArr.get(adapterPosition)
-                    galviewmodel.onClickNavigate(parm.uri, parm.originName)
-                }
+                bindingItem.galleryImgView.setOnClickListener({
+                    galviewmodel.onClickNavigate(uriArr.get(adapterPosition))
+                })
             }
         }
     }

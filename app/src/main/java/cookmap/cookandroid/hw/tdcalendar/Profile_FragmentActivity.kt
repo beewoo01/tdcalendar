@@ -1,71 +1,96 @@
 package cookmap.cookandroid.hw.tdcalendar
 
+import android.R.attr.data
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import cookmap.cookandroid.hw.tdcalendar.databinding.ProfileFragmentActivityBinding
-import cookmap.cookandroid.hw.tdcalendar.view.Setting_Fragment
-import cookmap.cookandroid.hw.tdcalendar.view.Setting_ImgCrop_Dl_Fragmnet
 import cookmap.cookandroid.hw.tdcalendar.view.Setting_profile_Dl_Fragment
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.Gallery_ViewModel
-import kotlinx.android.synthetic.main.profile_fragment_activity.*
+import java.lang.Exception
+
 
 class Profile_FragmentActivity : FragmentActivity() {
 
-    lateinit var binding : ProfileFragmentActivityBinding
-    val galleryViewmodel : Gallery_ViewModel by viewModels()
+    lateinit var binding: ProfileFragmentActivityBinding
+    val galleryViewmodel: Gallery_ViewModel by viewModels()
     var count = 0
 
-    private fun bindViewModel(){
+    private fun bindViewModel() {
         Log.d("bindViewModel", "bindViewModel")
         galleryViewmodel.action.observe(this, Observer {
-            when (it){
-                is Gallery_ViewModel.Action.Navigate ->{
-                    movoFragment(Setting_ImgCrop_Dl_Fragmnet(), count)
-                }
-                is Gallery_ViewModel.Action.Imgk ->{
-                    movoFragment(Setting_ImgCrop_Dl_Fragmnet(), count)
+            when (it) {
+                is Gallery_ViewModel.Action.Navigater -> {
+                    galleryViewmodel.item.value?.let {
+                        val intent = Intent(
+                            CropImage.activity(Uri.parse(it.uri))
+                                .setCropShape(CropImageView.CropShape.OVAL)
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .setGuidelinesColor(Color.RED)
+                                .getIntent(this)
+                        )
+                        requestActivity.launch(intent)
+                    }
+
                 }
             }
         })
     }
 
+    val requestActivity = registerForActivityResult(
+        StartActivityForResult()
+    ) {
+        val result = CropImage.getActivityResult(it.data)
+        if (it.resultCode == RESULT_OK) {
+
+            val resultUri: Uri = result.getUri()
+            Log.d("resultUri", resultUri.toString())
+        } else if (it.resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+            Log.d("resultCode", result.error.toString())
+        }
+    }
+
+    //file:///data/user/0/cookmap.cookandroid.hw.tdcalendar/cache/cropped7381478666513832706.jpg
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.profile_fragment_activity)
-        binding.galViewModel = galleryViewmodel
-        binding.setLifecycleOwner(this)
-        movoFragment(Setting_profile_Dl_Fragment() , count)
-        bindViewModel()
-    }
-    fun movoFragment(fragment : Fragment, count : Int){
-        var ft = supportFragmentManager.beginTransaction()
-        if (count == 0){
-            Log.d(javaClass.simpleName, "count 0 in here")
-            ft.replace( R.id.frame_layout_profile, fragment).addToBackStack(null).commit()
-            this.count = 1
-        }else{
-            Log.d(javaClass.simpleName, "count 1 in here")
-            ft.replace( R.id.frame_layout_profile, fragment).commit()
-            this.count = 0
+        binding.also {
+            it.galViewModel = galleryViewmodel
+            it.setLifecycleOwner(this)
+            it.profileFa = this
+
         }
+        movoFragment(Setting_profile_Dl_Fragment(), count)
+        bindViewModel()
+
+    }
+
+
+    fun movoFragment(fragment: Fragment, count: Int) {
+        var ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.frame_layout_profile, fragment).commit()
 
     }
 
     override fun onBackPressed() {
-        if (count == 1){
-            finish()
-        }else{
-            super.onBackPressed()
-        }
+        finish()
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 }
