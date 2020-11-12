@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import cookmap.cookandroid.hw.tdcalendar.databinding.GalleryItemImageviewBinding
@@ -40,10 +41,9 @@ class Setting_profile_Dl_Fragment : Fragment() {
             viewmodel = galviewmodel
             setLifecycleOwner(requireActivity())
 
-            recyclerSetProfile.adapter = Imageadater(galviewmodel.getAllImg().value!!)
-
-
-            //recyclerSetProfile.adapter = Imageadater(galviewmodel.getAllImg().value!!)
+            galviewmodel.data.observe(requireActivity(), Observer {
+                recyclerSetProfile.adapter = Imageadater(galviewmodel.data.value as ArrayList<Img>)
+            })
 
         }
         return bind.root

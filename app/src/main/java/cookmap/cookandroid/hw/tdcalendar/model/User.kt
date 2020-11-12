@@ -16,6 +16,8 @@ class User{
         this.Password = Password
     }
 
+    constructor()
+
     constructor(name: String){ this.name = name }
 
 

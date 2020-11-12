@@ -27,26 +27,7 @@ class Profile_FragmentActivity : FragmentActivity() {
     val galleryViewmodel: Gallery_ViewModel by viewModels()
     var count = 0
 
-    private fun bindViewModel() {
-        Log.d("bindViewModel", "bindViewModel")
-        galleryViewmodel.action.observe(this, Observer {
-            when (it) {
-                is Gallery_ViewModel.Action.Navigater -> {
-                    galleryViewmodel.item.value?.let {
-                        val intent = Intent(
-                            CropImage.activity(Uri.parse(it.uri))
-                                .setCropShape(CropImageView.CropShape.OVAL)
-                                .setGuidelines(CropImageView.Guidelines.ON)
-                                .setGuidelinesColor(Color.RED)
-                                .getIntent(this)
-                        )
-                        requestActivity.launch(intent)
-                    }
 
-                }
-            }
-        })
-    }
 
     val requestActivity = registerForActivityResult(
         StartActivityForResult()
@@ -56,6 +37,8 @@ class Profile_FragmentActivity : FragmentActivity() {
 
             val resultUri: Uri = result.getUri()
             Log.d("resultUri", resultUri.toString())
+            galleryViewmodel.emitterImg(resultUri.toString())
+            //upload(resultUri.toString())
         } else if (it.resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
             Log.d("resultCode", result.error.toString())
         }
@@ -85,12 +68,36 @@ class Profile_FragmentActivity : FragmentActivity() {
 
     }
 
-    override fun onBackPressed() {
-        finish()
+
+    private fun bindViewModel() {
+        Log.d("bindViewModel", "bindViewModel")
+        galleryViewmodel.action.observe(this, Observer {
+            when (it) {
+                is Gallery_ViewModel.Action.Navigater -> {
+                    galleryViewmodel.item.value?.let {
+                        //media/external/images/media/6147
+                        galleryViewmodel.emitterImg(galleryViewmodel.item.value!!.uri)
+                        /*val intent = Intent(
+                            CropImage.activity(Uri.parse(it.uri))
+                                .setCropShape(CropImageView.CropShape.OVAL)
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .setGuidelinesColor(Color.RED)
+                                .getIntent(this)
+                        )
+                        requestActivity.launch(intent)*/
+                    }
+
+                }
+            }
+        })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun upload(){
+
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
 }
