@@ -2,6 +2,8 @@ package cookmap.cookandroid.hw.tdcalendar.viewmodel
 
 import android.app.Application
 import android.graphics.Color
+import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -66,46 +68,69 @@ class Gallery_ViewModel(application: Application) : AndroidViewModel(application
 
     }
 
+    fun getPathFromUri(uri : Uri) : String{
+        val cursor = app.contentResolver.query(uri, null, null, null, null)
+        cursor.moveToNext()
+        val path = cursor.getString(cursor.getColumnIndex( "_data"))
+        cursor.close()
+        return path
+    }
+
     fun emitterImg(path: String){
         Log.d("emitterImg", "11111111111111111")
-        val file = File(path)
-        val bos = ByteArrayOutputStream()
-        val bitmapDate = bos.toByteArray()
-        val fos = FileOutputStream(file)
-        fos. write(bitmapDate)
-        fos.flush()
-        fos.close()
-        val client = OkHttpClient.Builder().build()
-        //val apiService = Retrofit.Builder().baseUrl("https://beewoo01.tk/").client(client)
+        val filePath = Environment.getDownloadCacheDirectory()
+        //val file = File(filePath, "/cropped5961002802568359827.jpg")
+        Log.d("filePath?", filePath.toString())
+        try {
+            //val file = File(app.cacheDir, "/cropped2624546965097081082.jpg")
+            val file = File(path)
+            val fos = FileOutputStream(file)
+            val bos = ByteArrayOutputStream()
+            val bitmapDate = bos.toByteArray()
+            fos. write(bitmapDate)
+            fos.flush()
+            fos.close()
+
+
+
+            val client = OkHttpClient.Builder().build()
+            //val apiService = Retrofit.Builder().baseUrl("https://beewoo01.tk/").client(client)
             //.build().create(ApiService::class.java)
 
-        val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
-        val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
-        var gson = GsonBuilder().setLenient().create()
-        var retrofit = Retrofit.Builder().baseUrl("http://192.168.56.1:8080/")
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-        var server = retrofit.create(ApiService::class.java)
-        server.postImage(User().idx.toString(),body)
+            val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
+            val body = MultipartBody.Part.createFormData("upload", file.name, reqFile)
+            var gson = GsonBuilder().setLenient().create()
+            var retrofit = Retrofit.Builder().baseUrl("http://192.168.56.1:8080/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+            var server = retrofit.create(ApiService::class.java)
+            server.postImage(User().idx.toString(),body)
 
 
-        server.postImage(User().idx.toString(), body)?.enqueue(object : retrofit2.Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
-                Log.d("emitterImg", "onResponse")
-                if (response.isSuccessful){
-                    Toast.makeText(app,"IsSuccessful", Toast.LENGTH_SHORT).show()
-                    Log.d("onResponse", "isSuccessful")
-                }else{
-                    Toast.makeText(app, "Some error occurred...", Toast.LENGTH_LONG).show();
-                    Log.d("onResponse", "else!!")
+            server.postImage(User().idx.toString(), body)?.enqueue(object : retrofit2.Callback<ResponseBody?> {
+                override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                    Log.d("emitterImg", "onResponse")
+                    if (response.isSuccessful){
+                        Toast.makeText(app,"IsSuccessful", Toast.LENGTH_SHORT).show()
+                        Log.d("onResponse", "isSuccessful")
+                    }else{
+                        Toast.makeText(app, "Some error occurred...", Toast.LENGTH_LONG).show();
+                        Log.d("onResponse", "else!!")
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                Log.d("레트로핏 결과1",t.message)
-            }
+                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    Log.d("레트로핏 결과1",t.message)
+                }
 
-        })
+            })
+
+        }catch (e : java.lang.Exception){
+            e.printStackTrace()
+        }
+
+
+
 
     }
     

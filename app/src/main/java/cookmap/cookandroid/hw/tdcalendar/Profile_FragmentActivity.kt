@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
+import androidx.core.graphics.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -28,16 +29,18 @@ class Profile_FragmentActivity : FragmentActivity() {
     var count = 0
 
 
-
     val requestActivity = registerForActivityResult(
         StartActivityForResult()
     ) {
         val result = CropImage.getActivityResult(it.data)
         if (it.resultCode == RESULT_OK) {
-
             val resultUri: Uri = result.getUri()
-            Log.d("resultUri", resultUri.toString())
-            galleryViewmodel.emitterImg(resultUri.toString())
+
+           /* Log.d("encodedPath??", resultUri.encodedPath)
+            Log.d("toString Path??", resultUri.toString())*/
+            galleryViewmodel.emitterImg(resultUri.encodedPath)
+
+
             //upload(resultUri.toString())
         } else if (it.resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
             Log.d("resultCode", result.error.toString())
@@ -75,16 +78,14 @@ class Profile_FragmentActivity : FragmentActivity() {
             when (it) {
                 is Gallery_ViewModel.Action.Navigater -> {
                     galleryViewmodel.item.value?.let {
-                        //media/external/images/media/6147
-                        galleryViewmodel.emitterImg(galleryViewmodel.item.value!!.uri)
-                        /*val intent = Intent(
+                        val intent = Intent(
                             CropImage.activity(Uri.parse(it.uri))
                                 .setCropShape(CropImageView.CropShape.OVAL)
                                 .setGuidelines(CropImageView.Guidelines.ON)
                                 .setGuidelinesColor(Color.RED)
                                 .getIntent(this)
                         )
-                        requestActivity.launch(intent)*/
+                        requestActivity.launch(intent)
                     }
 
                 }
@@ -92,7 +93,7 @@ class Profile_FragmentActivity : FragmentActivity() {
         })
     }
 
-    private fun upload(){
+    private fun upload() {
 
     }
 
