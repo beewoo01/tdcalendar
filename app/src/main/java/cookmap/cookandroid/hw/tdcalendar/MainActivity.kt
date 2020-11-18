@@ -10,9 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
+import cookmap.cookandroid.hw.tdcalendar.auth.AuthListener
 import cookmap.cookandroid.hw.tdcalendar.databinding.ActivityMainBinding
 import cookmap.cookandroid.hw.tdcalendar.databinding.NaviHeaderBinding
 import cookmap.cookandroid.hw.tdcalendar.model.User
@@ -23,12 +26,15 @@ import cookmap.cookandroid.hw.tdcalendar.viewmodel.Date_ViewModel
 import cookmap.cookandroid.hw.tdcalendar.viewmodel.LoginViewModel
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, AuthListener {
 
     var TAG = "MainActivity"
     private lateinit var binding : ActivityMainBinding
@@ -69,7 +75,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (!session.prefs.getString().first.equals("") ||
             !session.prefs.getString().second.equals("")){
-            onLogin(User(session.prefs.getString().first , session.prefs.getString().second))
+            lifecycleScope.launch {
+                withContext(coroutineContext){
+
+                    onLogin(User(session.prefs.getString().first , session.prefs.getString().second))
+                }
+            }
         }
     }
 
@@ -97,11 +108,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun onLogin(user: User) {
-        loginViewModel.start()
-        loginViewModel.connect()
-        loginViewModel.isRememvered = true
-        loginViewModel.socketEmit("login", user)
-        loginViewModel.socketOn("serverMessage")
+        loginViewModel.onRogin(user.Email, user.Password)
     }
 
     fun userInfoClick(){
@@ -111,74 +118,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
     }
-
-
-    private val onLoginReceived = Emitter.Listener { args ->
-        val receivedDate = args[0] as JSONObject
-        var message = receivedDate.getString("result")
-        Log.d("login", message)
-    }
-
-    private val onMessageReceived = Emitter.Listener { args ->
-        try {
-            Log.d("onMeaasgeRecived", "왔음")
-            val receivedDate = args[0] as JSONObject
-            var massage = receivedDate.getString("msg")
-            Log.d(TAG, massage)
-            Log.d(TAG, receivedDate.getString("data"))
-            //Log.d(TAG, receivedDate.getString("data"))
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    val onConnect : Emitter.Listener = Emitter.Listener {
-        Log.d("CordovaLog", "--connect: success")
-        mSocket.emit("login", "hi")
-    }
-
-    val onNewUser: Emitter.Listener = Emitter.Listener {
-
-        var data = it[0] //String으로 넘어옵니다. JSONArray로 넘어오지 않도록 서버에서 코딩한 것 기억나시죠?
-        if (data is String) {
-            users = data.split(",").toTypedArray() //파싱해줍니다.
-            for (a: String in users) {
-                Log.d("user", a) //누구누구 있는지 한 번 쫘악 뽑아줘봅시다.
-            }
-        } else {
-            Log.d("error", "Something went wrong")
-        }
-
-    }
-
-    val onMyMessage = Emitter.Listener {
-        Log.d("on", "Mymessage has been triggered.")
-        Log.d("mymsg : ", it[0].toString())
-    }
-
-    val onNewMessage = Emitter.Listener {
-        Log.d("on", "New message has been triggered.")
-        Log.d("new msg : ", it[0].toString())
-    }
-
-    val onLogout = Emitter.Listener {
-        Log.d("on", "Logout has been triggered.")
-
-        try {
-//             {"diconnected" : nickname,
-//              "whoIsOn" : whoIsOn
-//         } 이런 식으로 넘겨진 데이터를 파싱하는 방법입니다.
-            val jsonObj: JSONObject = it[0] as JSONObject //it[0] 은 사실 Any 타입으로 넘어오지만 캐스팅을 해줍니다.
-            Log.d("logout ", jsonObj.getString("disconnected"))
-            Log.d("WHO IS ON NOW", jsonObj.getString("whoIsOn"))
-
-            //Disconnect socket!
-            mSocket.disconnect()
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-    }
-
 
     override fun onSupportNavigateUp(): Boolean {
         binding.drawerLayout.open()
@@ -197,5 +136,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
+    }
+
+    override fun onStarted() {
+        progressbar.show()
+    }
+
+    override fun onSuccess(loginResponse: LiveData<Pair<String?, User?>>) {
+        progressbar.hide()
+    }
+
+    override fun onFailure(message: String) {
+        progressbar.hide()
+        toast(message)
     }
 }

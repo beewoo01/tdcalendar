@@ -3,11 +3,11 @@ package cookmap.cookandroid.hw.tdcalendar.viewmodel
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import cookmap.cookandroid.hw.tdcalendar.auth.AuthListener
 import cookmap.cookandroid.hw.tdcalendar.controller.SocketHelper
+import cookmap.cookandroid.hw.tdcalendar.data.repository.UserRepository
 import cookmap.cookandroid.hw.tdcalendar.model.User
 import cookmap.cookandroid.hw.tdcalendar.session.session
 import io.socket.client.Socket
@@ -24,7 +24,28 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     val testname = MutableLiveData<String>()
 
-    fun start(){
+    var authListner : AuthListener? = null
+
+    fun onRogin(email : String, psw : String){
+        authListner?.onStarted()
+        if (email.isNullOrEmpty() || psw.isNullOrEmpty()){
+            authListner?.onFailure("잘못된 정보입니다.")
+            return
+        }
+
+        val loginResponse = UserRepository().userLogin(email, psw)
+        authListner?.onSuccess(loginResponse)
+        user.value = loginResponse.value?.second!!
+        if (!isRememvered) session.prefs.setString(user.value!!.Email, user.value!!.Password)
+        setUserInfo()
+    }
+
+    fun setUserInfo(){
+
+    }
+
+
+    /*fun start(){
         Log.d("viewmodel", "start에옴")
         mSocket = mSocketHelper.getSocket()!!
         mSocket.on(Socket.EVENT_CONNECT, onConnect)
@@ -87,5 +108,5 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     fun connect(){
         mSocket.connect()
-    }
+    }*/
 }

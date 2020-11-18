@@ -54,26 +54,27 @@ class LogIn_dialog : DialogFragment() {
     fun setLogin(){
         var editEmail = binding.userEmailEdit.text.toString()
         var editPwd = binding.userPwdEdit.text.toString()
-        if (TextUtils.isEmpty(editEmail) || TextUtils.isEmpty(editPwd)){
-            Toast.makeText(activity, "빈 칸 없이 작성 해주세요", Toast.LENGTH_SHORT).show()
-        }else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(editEmail).matches()){
+        if (editEmail.isNullOrEmpty() || editPwd.isNullOrEmpty()){
+            Toast.makeText(activity, "형식에 어긋납니다.", Toast.LENGTH_SHORT).show()
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(editEmail).matches()){
             Toast.makeText(activity, "이메일 형식에 어긋납니다.", Toast.LENGTH_SHORT).show()
         }else{
-
-            val user = User(Email = editEmail, Password =  editPwd)
-            setViewmodel(user)
+            loginViewModel.onRogin(editEmail, editPwd)
+            dismiss()
+            //setViewmodel(User(editEmail, editPwd))
         }
     }
 
     fun setViewmodel(user : User){
+
         //loginViewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
         //loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-        loginViewModel.start()
+        /*loginViewModel.start()
         loginViewModel.connect()
         loginViewModel.isRememvered = false
         loginViewModel.socketEmit("login", user)
-        loginViewModel.socketOn("serverMessage")
+        loginViewModel.socketOn("serverMessage")*/
         dismiss()
     }
 

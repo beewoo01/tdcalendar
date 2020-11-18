@@ -1,35 +1,21 @@
 package cookmap.cookandroid.hw.tdcalendar.model
 
+import com.google.gson.annotations.SerializedName
 
 
-class User{
-
-    var Email : String = ""
-    var Password : String = ""
-    var name: String = ""
-    var idx: Int = 0
-    var profile: String = ""
-    var invitation: String = ""
-
-    constructor(Email: String, Password: String){
-        this.Email = Email
-        this.Password = Password
-    }
-
-    constructor()
-
-    constructor(name: String){ this.name = name }
-
-
-    constructor(Email: String, Password: String, name: String,
-                idx : Int, profile: String, invitation: String){
-        this.Email = Email
-        this.Password = Password
-        this.name = name
-        this.idx = idx
-        this.profile = profile
-        this.invitation = invitation
-    }
-
-
+data class User(
+    @SerializedName("userUid")
+    var idx: Int,
+    @SerializedName("userEmail")
+    var Email : String,
+    @SerializedName("userPwd")
+    var Password : String,
+    @SerializedName("userName")
+    var name: String,
+    @SerializedName("userProfile")
+    var profile: String,
+    @SerializedName("invitation")
+    var invitation: String
+) {
+    constructor(email : String, Password: String)
 }
